@@ -1,3 +1,11 @@
+## Task Features (client and server)
+
+- [✓] Update post
+- [✓] Delete comment
+- [✓] Update comment
+- [✓] Infinite scroll
+- [✓] Update user data
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

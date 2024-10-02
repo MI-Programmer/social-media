@@ -10,6 +10,8 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
+import FormRow from "@/components/common/FormRow";
+import ButtonLoading from "@/components/common/ButtonLoading";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -20,8 +22,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import FormRow from "@/components/common/FormRow";
-import ButtonLoading from "@/components/common/ButtonLoading";
 import { createPost } from "@/actions/post";
 
 interface DataForm {
@@ -53,13 +53,12 @@ const CreatePost = () => {
 
   const onSubmit = (_: DataForm, event?: BaseSyntheticEvent) => {
     const formData = new FormData(event?.target);
-
     startTransition(async () => {
       const data = await createPost(formData);
-
       if (data.status === "success") {
         toast.success(data.message);
         router.refresh();
+        router.push(`/posts/${data.post.id}`);
       } else {
         toast.error(data.message);
       }
@@ -85,7 +84,7 @@ const CreatePost = () => {
         </div>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Create a new post</DialogTitle>
         </DialogHeader>
@@ -94,10 +93,11 @@ const CreatePost = () => {
           <FormRow label="Content" error={errors.content?.message}>
             <Textarea
               placeholder="What's on your mind?"
-              className="h-24 resize-none"
+              className="h-24"
               {...register("content", {
                 required: "Content field is required.",
               })}
+              disabled={isPending}
             />
           </FormRow>
 
@@ -106,7 +106,8 @@ const CreatePost = () => {
               type="file"
               {...register("image", { required: "Image field is required." })}
               onChange={handleChangeImage}
-              accept="image/*"
+              accept=".png, .jpg, .jpeg"
+              disabled={isPending}
             />
           </FormRow>
 

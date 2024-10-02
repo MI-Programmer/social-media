@@ -7,6 +7,9 @@ interface Comment {
   id: number;
   content: string;
   author: Author;
+  postId: number;
+  authorId: number;
+  createdAt: string;
 }
 
 interface Tag {

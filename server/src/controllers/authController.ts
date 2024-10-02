@@ -3,7 +3,7 @@ import { compare, hash } from "bcrypt";
 import { ZodError } from "zod";
 import jwt from "jsonwebtoken";
 
-import { loginValidation, userValidation } from "../lib/zod";
+import { loginValidation, signinValidation } from "../lib/zod";
 import prisma from "../lib/prismaClient";
 import { error } from "../utils/helper";
 
@@ -20,7 +20,7 @@ interface ReqBodySignup extends ReqBodyLogin {
 export const signup = async (req: Request, res: Response) => {
   const { email, firstName, lastName, password } = req.body as ReqBodySignup;
   try {
-    await userValidation.parseAsync({ email, firstName, lastName, password });
+    await signinValidation.parseAsync({ email, firstName, lastName, password });
   } catch (errorsZod) {
     error.message = "Validations failed.";
     if (errorsZod instanceof ZodError) error.data = errorsZod.errors;

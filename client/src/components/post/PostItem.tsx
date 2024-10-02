@@ -5,30 +5,27 @@ import { HiThumbUp } from "react-icons/hi";
 import { MessageCircle } from "lucide-react";
 
 import defaultImgUser from "/public/default-user.jpg";
-import { Button } from "@/components/ui/button";
 import PostLike from "@/components/post/PostLike";
+import PostMenu from "@/components/post/PostMenu";
+import { Button } from "@/components/ui/button";
+import ProfileImage from "@/components/common/ProfileImage";
 import { Post } from "@/types/post";
-import PostMenu from "./PostMenu";
+import { User } from "@/types/user";
 
 interface PostItemProps {
   post: Post;
-  user: { id: number; firstName: string; lastName: string };
+  user: User;
 }
 
 const PostItem = ({ post, user }: PostItemProps) => {
   const { id, content, imageUrl, likes, comments, author, createdAt } = post;
+  const isAuthorized = post.author.id === user.id;
 
   return (
     <div className="space-y-2 rounded-md bg-card p-4 shadow-md">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div>
-            <Image
-              src={defaultImgUser}
-              alt="Profile user"
-              className="h-10 w-10"
-            />
-          </div>
+          <ProfileImage src={author.imageUrl || defaultImgUser} size="sm" />
 
           <div>
             <h3 className="font-semibold">
@@ -41,7 +38,7 @@ const PostItem = ({ post, user }: PostItemProps) => {
           </div>
         </div>
 
-        <PostMenu postId={id} />
+        <PostMenu post={post} isAuthorized={isAuthorized} />
       </div>
 
       <div>{content}</div>

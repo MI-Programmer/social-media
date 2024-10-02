@@ -2,23 +2,25 @@
 
 import { useState, useTransition } from "react";
 import toast from "react-hot-toast";
-import Image from "next/image";
+import { StaticImageData } from "next/image";
 import { useRouter } from "next/navigation";
+import { SendHorizonal } from "lucide-react";
 
-import defaultImgUser from "/public/default-user.jpg";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import ButtonLoading from "@/components/common/ButtonLoading";
+import ProfileImage from "@/components/common/ProfileImage";
 import { createPostComment } from "@/actions/post";
 
 interface CreateCommentProps {
   postId: number;
+  profileImage: string | StaticImageData;
 }
 
-const CreateComment = ({ postId }: CreateCommentProps) => {
+const CreateComment = ({ postId, profileImage }: CreateCommentProps) => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [comment, setComment] = useState<string | "">("");
+  const isDisabled = isPending || !comment;
 
   const handleCreateComment = () => {
     startTransition(async () => {
@@ -35,28 +37,19 @@ const CreateComment = ({ postId }: CreateCommentProps) => {
   return (
     <div className="flex gap-4">
       <div className="flex flex-1 items-start gap-2">
-        <div className="relative h-10 w-10 overflow-hidden rounded-full">
-          <Image
-            src={defaultImgUser}
-            alt="Profile user"
-            fill
-            className="object-cover"
-          />
-        </div>
+        <ProfileImage src={profileImage} size="sm" />
 
         <Textarea
           onChange={(e) => setComment(e.target.value)}
           value={comment}
           placeholder="Write comment..."
-          className="h-20 resize-none"
+          className="h-20"
         />
       </div>
 
-      {isPending ? (
-        <ButtonLoading />
-      ) : (
-        <Button onClick={handleCreateComment}>Add comment</Button>
-      )}
+      <Button onClick={handleCreateComment} disabled={isDisabled}>
+        <SendHorizonal className="h-4 w-4" />
+      </Button>
     </div>
   );
 };

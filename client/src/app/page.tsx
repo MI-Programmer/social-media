@@ -2,9 +2,9 @@ import Image from "next/image";
 
 import defaultImgUser from "/public/default-user.jpg";
 import CreatePost from "@/components/post/CreatePost";
+import PostItems from "@/components/post/PostItems";
 import { getPosts } from "@/actions/post";
 import { Post } from "@/types/post";
-import PostItems from "@/components/post/PostItems";
 
 const Home = async () => {
   const posts: Post[] = await getPosts();

@@ -1,10 +1,7 @@
 "use client";
 
-import { useTransition } from "react";
-import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Ellipsis } from "lucide-react";
-import toast from "react-hot-toast";
+import { Edit, Ellipsis, Eye, Trash2 } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -13,86 +10,72 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import {
   AlertDialog,
-  AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { deletePost } from "@/actions/post";
+import DeletePost from "@/components/post/DeletePost";
+import UpdatePost from "@/components/post/UpdatePost";
+import { Post } from "@/types/post";
 
 interface PostMenuProps {
-  postId: number;
+  post: Post;
+  isAuthorized: boolean;
 }
 
-const PostMenu = ({ postId }: PostMenuProps) => {
-  const [isPending, startTransition] = useTransition();
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const handleDeletePost = () => {
-    startTransition(async () => {
-      const data = await deletePost(postId);
-
-      if (data.status === "success") {
-        toast.success(data.message);
-
-        if (pathname.includes("/posts")) router.back();
-        else router.refresh();
-      } else {
-        toast.error(data.message);
-      }
-    });
-  };
-
+const PostMenu = ({ post, isAuthorized }: PostMenuProps) => {
   return (
-    <AlertDialog>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon">
-            <Ellipsis className="h-6 w-6 text-gray-500" />
-          </Button>
-        </DropdownMenuTrigger>
+    <Dialog>
+      <AlertDialog>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <Ellipsis className="h-6 w-6 text-gray-500" />
+            </Button>
+          </DropdownMenuTrigger>
 
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem>
-            <Link href={`/posts/${postId}`}>View post</Link>
-          </DropdownMenuItem>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem>
+              <Link
+                href={`/posts/${post.id}`}
+                className="flex w-full items-center gap-2"
+              >
+                <Eye className="h-5 w-5" /> View
+              </Link>
+            </DropdownMenuItem>
 
-          <DropdownMenuSeparator />
+            {isAuthorized && (
+              <>
+                <DropdownMenuSeparator />
+                <DialogTrigger asChild className="w-full">
+                  <DropdownMenuItem className="flex items-center gap-2">
+                    <Edit className="h-5 w-5" /> Edit
+                  </DropdownMenuItem>
+                </DialogTrigger>
 
-          <AlertDialogTrigger className="w-full">
-            <DropdownMenuItem>Delete post</DropdownMenuItem>
-          </AlertDialogTrigger>
-        </DropdownMenuContent>
-      </DropdownMenu>
+                <DropdownMenuSeparator />
+                <AlertDialogTrigger className="w-full">
+                  <DropdownMenuItem className="flex items-center gap-2">
+                    <Trash2 className="h-5 w-5" /> Delete
+                  </DropdownMenuItem>
+                </AlertDialogTrigger>
+              </>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
 
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            post.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
+        <AlertDialogContent>
+          <DeletePost postId={post.id} />
+        </AlertDialogContent>
+      </AlertDialog>
 
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <Button
-            variant="destructive"
-            onClick={handleDeletePost}
-            disabled={isPending}
-          >
-            Delete
-          </Button>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+      <DialogContent>
+        <UpdatePost post={post} />
+      </DialogContent>
+    </Dialog>
   );
 };
 

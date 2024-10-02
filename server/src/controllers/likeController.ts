@@ -7,7 +7,6 @@ import { User } from "@prisma/client";
 export const likePost = async (req: Request, res: Response) => {
   const postId = +req.params.postId;
   const user = req.user as User;
-
   const post = await prisma.post.findUnique({
     where: { id: postId },
     select: {
@@ -20,20 +19,17 @@ export const likePost = async (req: Request, res: Response) => {
     error.status = 404;
     throw error;
   }
-
   if (post.likes.some((like) => like.userId === user.id)) {
     error.message = "Post has already been liked.";
     error.status = 400;
     throw error;
   }
-
   await prisma.like.create({
     data: {
       user: { connect: { id: user.id } },
       post: { connect: { id: postId } },
     },
   });
-
   res.status(201).json({ message: "Successfully created like post!" });
 };
 

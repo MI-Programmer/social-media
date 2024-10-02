@@ -63,9 +63,9 @@ const HeaderActions = ({ fullName }: HeaderActionsProps) => {
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuLabel>{fullName}</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link href="/profile">Profile</Link>
-            </DropdownMenuItem>
+            <Link href="/profile">
+              <DropdownMenuItem>Profile</DropdownMenuItem>
+            </Link>
             <DropdownMenuItem>Settings</DropdownMenuItem>
             <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
           </DropdownMenuContent>

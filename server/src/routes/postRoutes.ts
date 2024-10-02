@@ -6,6 +6,7 @@ import {
   getPost,
   getPosts,
   getUserPosts,
+  updatePost,
 } from "../controllers/postController";
 import { isAuthenticated } from "../lib/passport";
 import catchAsync from "../utils/catchAsync";
@@ -20,7 +21,7 @@ router.get("/:postId", isAuthenticated, catchAsync(getPost));
 
 router.post("/", isAuthenticated, catchAsync(createPost));
 
-router.put("/:postId");
+router.put("/:postId", isAuthenticated, catchAsync(updatePost));
 
 router.delete("/:postId", isAuthenticated, catchAsync(deletePost));
 

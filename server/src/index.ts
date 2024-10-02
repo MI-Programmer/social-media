@@ -24,8 +24,8 @@ app.use(upload.single("image"));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
-app.use("/api/posts/:postId/like", likeRoutes);
-app.use("/api/posts/:postId/comment", commentRoutes);
+app.use("/api/posts/:postId/likes", likeRoutes);
+app.use("/api/posts/:postId/comments", commentRoutes);
 app.use("/api", userRoutes);
 
 app.use(
