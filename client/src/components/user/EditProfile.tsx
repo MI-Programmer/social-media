@@ -55,7 +55,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
           </DialogHeader>
 
           <form onSubmit={handleUpdateUser} className="grid gap-4 py-4">
-            <ProfileImage src={imageUrl || ""} size="lg" />
+            <ProfileImage src={imageUrl} size="lg" />
 
             <FormRow label="Profile image">
               <Input
@@ -70,21 +70,23 @@ const EditProfile = ({ user }: EditProfileProps) => {
               <Input value={email} disabled={true} />
             </FormRow>
 
-            <FormRow label="Firstname">
-              <Input
-                name="firstName"
-                defaultValue={firstName}
-                disabled={isPending}
-              />
-            </FormRow>
+            <div className="flex gap-2">
+              <FormRow label="Firstname">
+                <Input
+                  name="firstName"
+                  defaultValue={firstName}
+                  disabled={isPending}
+                />
+              </FormRow>
 
-            <FormRow label="Lastname">
-              <Input
-                name="lastName"
-                defaultValue={lastName}
-                disabled={isPending}
-              />
-            </FormRow>
+              <FormRow label="Lastname">
+                <Input
+                  name="lastName"
+                  defaultValue={lastName}
+                  disabled={isPending}
+                />
+              </FormRow>
+            </div>
 
             {isPending ? (
               <ButtonLoading />

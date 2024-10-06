@@ -8,21 +8,20 @@ import {
   getUserPosts,
   updatePost,
 } from "../controllers/postController";
-import { isAuthenticated } from "../lib/passport";
 import catchAsync from "../utils/catchAsync";
 
 const router = Router();
 
-router.get("/", isAuthenticated, catchAsync(getPosts));
+router.get("/", catchAsync(getPosts));
 
-router.get("/user/:userId", isAuthenticated, catchAsync(getUserPosts));
+router.get("/user/:userId", catchAsync(getUserPosts));
 
-router.get("/:postId", isAuthenticated, catchAsync(getPost));
+router.get("/:postId", catchAsync(getPost));
 
-router.post("/", isAuthenticated, catchAsync(createPost));
+router.post("/", catchAsync(createPost));
 
-router.put("/:postId", isAuthenticated, catchAsync(updatePost));
+router.put("/:postId", catchAsync(updatePost));
 
-router.delete("/:postId", isAuthenticated, catchAsync(deletePost));
+router.delete("/:postId", catchAsync(deletePost));
 
 export default router;

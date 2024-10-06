@@ -20,9 +20,10 @@ import { logout } from "@/actions/auth";
 
 interface HeaderActionsProps {
   fullName: string | null;
+  userId: number;
 }
 
-const HeaderActions = ({ fullName }: HeaderActionsProps) => {
+const HeaderActions = ({ fullName, userId }: HeaderActionsProps) => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -63,7 +64,7 @@ const HeaderActions = ({ fullName }: HeaderActionsProps) => {
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuLabel>{fullName}</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <Link href="/profile">
+            <Link href={`/profile/${userId}`}>
               <DropdownMenuItem>Profile</DropdownMenuItem>
             </Link>
             <DropdownMenuItem>Settings</DropdownMenuItem>

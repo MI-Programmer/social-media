@@ -34,9 +34,9 @@ const UpdatePost = ({ post }: UpdatePostProps) => {
     }
   };
 
-  const handleUpdatePost = (event?: FormEvent<HTMLFormElement>) => {
-    event?.preventDefault();
-    const formData = new FormData(event?.target as HTMLFormElement);
+  const handleUpdatePost = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.target as HTMLFormElement);
 
     startTransition(async () => {
       const updatePostWithId = updatePost.bind(null, formData);
@@ -45,9 +45,7 @@ const UpdatePost = ({ post }: UpdatePostProps) => {
       if (data.status === "success") {
         toast.success(data.message);
         router.refresh();
-      } else {
-        toast.error(data.message);
-      }
+      } else toast.error(data.message);
     });
   };
 

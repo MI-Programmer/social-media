@@ -5,6 +5,9 @@
 - [✓] Update comment
 - [✓] Infinite scroll
 - [✓] Update user data
+- [x] Responsive every pages
+- [✓] View profile users
+- [✓] Add friends and remove friends
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 

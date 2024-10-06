@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Edit, Ellipsis, Eye, Trash2 } from "lucide-react";
+import { Edit, Ellipsis, Eye, Trash2, UserMinus } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -20,13 +20,17 @@ import { Button } from "@/components/ui/button";
 import DeletePost from "@/components/post/DeletePost";
 import UpdatePost from "@/components/post/UpdatePost";
 import { Post } from "@/types/post";
+import { deleteFriend } from "@/actions/user";
 
 interface PostMenuProps {
   post: Post;
   isAuthorized: boolean;
+  isFriend: boolean;
 }
 
-const PostMenu = ({ post, isAuthorized }: PostMenuProps) => {
+const PostMenu = ({ post, isAuthorized, isFriend }: PostMenuProps) => {
+  const { id, author } = post;
+
   return (
     <Dialog>
       <AlertDialog>
@@ -40,12 +44,25 @@ const PostMenu = ({ post, isAuthorized }: PostMenuProps) => {
           <DropdownMenuContent align="end">
             <DropdownMenuItem>
               <Link
-                href={`/posts/${post.id}`}
+                href={`/posts/${id}`}
                 className="flex w-full items-center gap-2"
               >
                 <Eye className="h-5 w-5" /> View
               </Link>
             </DropdownMenuItem>
+
+            {isFriend && (
+              <DropdownMenuItem>
+                <form action={deleteFriend}>
+                  <input type="hidden" name="friendId" value={author.id} />
+
+                  <button className="flex w-full items-center gap-2">
+                    <UserMinus className="h-5 w-5" />
+                    Unfriend
+                  </button>
+                </form>
+              </DropdownMenuItem>
+            )}
 
             {isAuthorized && (
               <>
@@ -68,7 +85,7 @@ const PostMenu = ({ post, isAuthorized }: PostMenuProps) => {
         </DropdownMenu>
 
         <AlertDialogContent>
-          <DeletePost postId={post.id} />
+          <DeletePost postId={id} />
         </AlertDialogContent>
       </AlertDialog>
 

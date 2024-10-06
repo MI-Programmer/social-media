@@ -1,7 +1,6 @@
 import { Dispatch, ReactNode, SetStateAction } from "react";
 import { formatDistanceToNow } from "date-fns";
 
-import defaultImgUser from "/public/default-user.jpg";
 import { Textarea } from "@/components/ui/textarea";
 import ProfileImage from "@/components/common/ProfileImage";
 import { Comment } from "@/types/post";
@@ -29,7 +28,7 @@ const CommentItem = ({
 
   return (
     <div className="flex gap-2">
-      <ProfileImage src={imageUrl || defaultImgUser} size="sm" />
+      <ProfileImage src={imageUrl} size="sm" />
 
       <div className="group flex w-full items-center gap-1 pr-2">
         <div className={`${isEdit ? "flex-1" : "max-w-[92%]"}`}>

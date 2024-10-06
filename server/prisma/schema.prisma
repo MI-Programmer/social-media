@@ -8,17 +8,30 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
+  id        Int          @id @default(autoincrement())
   firstName String
   lastName  String
-  email     String    @unique
+  email     String       @unique
   password  String
   imageUrl  String?
   posts     Post[]
   like      Like[]
   comments  Comment[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  friends   Friendship[] @relation("UserFriends")
+  friendsOf Friendship[] @relation("FriendOfUser")
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+}
+
+model Friendship {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  friendId  Int
+  user      User     @relation("UserFriends", fields: [userId], references: [id])
+  friend    User     @relation("FriendOfUser", fields: [friendId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, friendId])
 }
 
 model Post {

@@ -3,7 +3,6 @@
 import { SendHorizonal } from "lucide-react";
 import { useOptimistic, useState, useTransition } from "react";
 
-import defaultImgUser from "/public/default-user.jpg";
 import CreateComment from "@/components/post/CreateComment";
 import CommentItem from "@/components/post/CommentItem";
 import CommentMenu from "@/components/post/CommentMenu";
@@ -105,10 +104,7 @@ const PostComments = ({ comments, postId, user }: PostCommentsProps) => {
           ))
         : null}
 
-      <CreateComment
-        postId={postId}
-        profileImage={user.imageUrl || defaultImgUser}
-      />
+      <CreateComment postId={postId} profileImage={user.imageUrl} />
     </div>
   );
 };

@@ -1,13 +1,24 @@
 import { Router } from "express";
 
-import { getUser, updateUser } from "../controllers/userController";
+import {
+  createFriend,
+  deleteFriend,
+  getUser,
+  getUserById,
+  updateUser,
+} from "../controllers/userController";
 import catchAsync from "../utils/catchAsync";
-import { isAuthenticated } from "../lib/passport";
 
 const router = Router();
 
-router.get("/user", isAuthenticated, catchAsync(getUser));
+router.get("/user", catchAsync(getUser));
 
-router.put("/user", isAuthenticated, catchAsync(updateUser));
+router.get("/users/:userId", catchAsync(getUserById));
+
+router.post("/users/friends/:friendId", catchAsync(createFriend));
+
+router.put("/users", catchAsync(updateUser));
+
+router.delete("/users/friends/:friendId", catchAsync(deleteFriend));
 
 export default router;

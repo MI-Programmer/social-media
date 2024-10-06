@@ -3,7 +3,6 @@
 import { revalidatePath } from "next/cache";
 import axios from "axios";
 
-import { getUser } from "@/actions/user";
 import { URL_API } from "@/utils/constant";
 import { catchAsync } from "@/utils/catchAsync";
 import { authz } from "@/utils/helper";
@@ -38,10 +37,9 @@ export const getPosts = catchAsync(async (page: number) => {
   return data.posts as Post[];
 });
 
-export const getUserPosts = catchAsync(async (page: number) => {
-  const user = await getUser();
+export const getUserPosts = catchAsync(async (userId: number, page: number) => {
   const { data } = await axios.get(
-    `${URL_API}/posts/user/${user.id}?page=${page || 1}`,
+    `${URL_API}/posts/user/${userId}?page=${page || 1}`,
     {
       headers: authz(),
     },

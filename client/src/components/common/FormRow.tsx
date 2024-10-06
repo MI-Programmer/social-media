@@ -22,7 +22,7 @@ const FormRow = ({ children, label, error }: FormRowProps) => {
   const id = children.props.name;
 
   return (
-    <div className="grid gap-2">
+    <div className="grid w-full gap-2">
       {label && <Label htmlFor={id}>{label}</Label>}
 
       <div className="relative">

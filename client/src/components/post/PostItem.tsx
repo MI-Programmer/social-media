@@ -2,13 +2,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { format } from "date-fns";
 import { HiThumbUp } from "react-icons/hi";
-import { MessageCircle } from "lucide-react";
+import { Dot, MessageCircle } from "lucide-react";
 
-import defaultImgUser from "/public/default-user.jpg";
 import PostLike from "@/components/post/PostLike";
 import PostMenu from "@/components/post/PostMenu";
 import { Button } from "@/components/ui/button";
 import ProfileImage from "@/components/common/ProfileImage";
+import { createFriend } from "@/actions/user";
 import { Post } from "@/types/post";
 import { User } from "@/types/user";
 
@@ -20,17 +20,46 @@ interface PostItemProps {
 const PostItem = ({ post, user }: PostItemProps) => {
   const { id, content, imageUrl, likes, comments, author, createdAt } = post;
   const isAuthorized = post.author.id === user.id;
+  const isFriend = user.friends.some((item) => item.friendId === author.id);
+  const isPostAuth = post.author.id === user.id;
 
   return (
     <div className="space-y-2 rounded-md bg-card p-4 shadow-md">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <ProfileImage src={author.imageUrl || defaultImgUser} size="sm" />
+          <ProfileImage src={author.imageUrl} size="sm" />
 
           <div>
-            <h3 className="font-semibold">
-              {author.firstName} {author.lastName}
-            </h3>
+            <div className="flex items-center">
+              <Link
+                href={`/profile/${author.id}`}
+                className="font-semibold hover:underline"
+              >
+                {author.firstName} {author.lastName}
+              </Link>
+
+              {!isPostAuth && (
+                <div className="flex items-center">
+                  <Dot className="h-4 w-4" />
+
+                  {isFriend ? (
+                    <p className="text-xs font-medium">Friend</p>
+                  ) : (
+                    <form action={createFriend}>
+                      <input
+                        type="hidden"
+                        name="friendId"
+                        value={post.author.id}
+                      />
+
+                      <Button variant="link" size="sm" className="p-0">
+                        Add friend
+                      </Button>
+                    </form>
+                  )}
+                </div>
+              )}
+            </div>
 
             <p className="text-xs font-medium text-gray-600">
               {format(new Date(createdAt), "d MMMM 'at' HH:mm")}
@@ -38,7 +67,7 @@ const PostItem = ({ post, user }: PostItemProps) => {
           </div>
         </div>
 
-        <PostMenu post={post} isAuthorized={isAuthorized} />
+        <PostMenu post={post} isAuthorized={isAuthorized} isFriend={isFriend} />
       </div>
 
       <div>{content}</div>

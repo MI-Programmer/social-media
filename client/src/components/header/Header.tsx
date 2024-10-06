@@ -7,10 +7,10 @@ const Header = async () => {
   const fullName = user ? `${user.firstName} ${user.lastName}` : null;
 
   return (
-    <header className="sticky top-0 z-50 mx-auto max-w-7xl border-b bg-card">
-      <div className="flex h-16 items-center gap-4 px-4 md:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 border-b bg-card">
+      <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 md:px-6 lg:px-8">
         {user && <NavLinks />}
-        <HeaderActions fullName={fullName} />
+        <HeaderActions fullName={fullName} userId={user.id} />
       </div>
     </header>
   );

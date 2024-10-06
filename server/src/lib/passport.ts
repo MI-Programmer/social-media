@@ -16,6 +16,16 @@ passport.use(
     try {
       const user = await prisma.user.findUnique({
         where: { id: jwtPayload.userId },
+        include: {
+          friends: {
+            include: {
+              friend: {
+                select: { imageUrl: true, firstName: true, lastName: true },
+              },
+            },
+          },
+          friendsOf: true,
+        },
       });
 
       if (user) return done(null, user);

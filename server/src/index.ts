@@ -8,7 +8,7 @@ import userRoutes from "./routes/userRoutes";
 import postRoutes from "./routes/postRoutes";
 import likeRoutes from "./routes/likeRoutes";
 import commentRoutes from "./routes/commentRoutes";
-import passport from "./lib/passport";
+import passport, { isAuthenticated } from "./lib/passport";
 import { CustomError } from "./utils/helper";
 import upload from "./middleware/upload";
 
@@ -23,10 +23,10 @@ app.use(passport.initialize());
 app.use(upload.single("image"));
 
 app.use("/api/auth", authRoutes);
-app.use("/api/posts", postRoutes);
-app.use("/api/posts/:postId/likes", likeRoutes);
-app.use("/api/posts/:postId/comments", commentRoutes);
-app.use("/api", userRoutes);
+app.use("/api", isAuthenticated, userRoutes);
+app.use("/api/posts", isAuthenticated, postRoutes);
+app.use("/api/posts/:postId/likes", isAuthenticated, likeRoutes);
+app.use("/api/posts/:postId/comments", isAuthenticated, commentRoutes);
 
 app.use(
   (error: CustomError, req: Request, res: Response, next: NextFunction) => {

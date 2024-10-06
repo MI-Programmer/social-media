@@ -5,15 +5,14 @@ import {
   deletePostComment,
   updatePostComment,
 } from "../controllers/commentController";
-import { isAuthenticated } from "../lib/passport";
 import catchAsync from "../utils/catchAsync";
 
 const router = Router({ mergeParams: true });
 
-router.post("/", isAuthenticated, catchAsync(createPostComment));
+router.post("/", catchAsync(createPostComment));
 
-router.put("/:commentId", isAuthenticated, catchAsync(updatePostComment));
+router.put("/:commentId", catchAsync(updatePostComment));
 
-router.delete("/:commentId", isAuthenticated, catchAsync(deletePostComment));
+router.delete("/:commentId", catchAsync(deletePostComment));
 
 export default router;
